@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     #Custom Apps
     'core',
+    'userauths',
 ]
 
 MIDDLEWARE = [
@@ -79,12 +80,8 @@ WSGI_APPLICATION = 'testapp.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'djangobd',
-	'USER' : 'django',
-	'PASSWORD' : '12345',
-	'HOST' : '127.0.0.1',
-	'PORT' : '5432',
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
 
@@ -141,3 +138,5 @@ JAZZMIN_SETTINGS = {
     'site_logo' : "assets/imgs/theme/loading.gif",
     'copyright' : "angeldhl.com",
 }
+
+AUTH_USER_MODEL = 'userauths.User'
