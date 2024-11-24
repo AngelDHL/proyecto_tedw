@@ -1,5 +1,5 @@
 from django.http import HttpResponse
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.db.models import Count
 
 from core.models import Product, Category, Vendor, CartOrder, CartOrderItems, ProductImages, ProductReview, wishlist, Address
@@ -61,3 +61,15 @@ def vendor_detail_view(request, vid):
     }
 
     return render(request, "core/vendor-detail.html", context)
+
+def product_detail_view(request, pid):
+    product = Product.objects.get(pid=pid)
+
+    p_image = product.p_images.all()
+
+    context = {
+        "p":product,
+        "p_image":p_image,
+    }
+
+    return render(request, "core/product-detail.html", context)
