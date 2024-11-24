@@ -1,5 +1,5 @@
 from django.urls import path
-from core.views import index, category_list_view, product_list_view, category_product_list_view, vendor_list_view, vendor_detail_view, product_detail_view, tag_list, ajax_add_review
+from core.views import index, category_list_view, product_list_view, category_product_list_view, vendor_list_view, vendor_detail_view, product_detail_view, tag_list, ajax_add_review, search_view
 
 app_name = "core"
 
@@ -22,4 +22,7 @@ urlpatterns = [
 
     # Add review
     path("ajax-add-review/<int:pid>/", ajax_add_review, name="ajax-add-review"),
+
+    # Search
+    path("search/", search_view, name="search")
 ]
