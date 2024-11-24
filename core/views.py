@@ -3,7 +3,7 @@
 # from bs4 import Tag
 from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404
-from django.db.models import Count
+from django.db.models import Count, Avg
 from taggit.models import Tag
 
 from core.models import Product, Category, Vendor, CartOrder, CartOrderItems, ProductImages, ProductReview, wishlist, Address
@@ -70,11 +70,16 @@ def product_detail_view(request, pid):
     product = Product.objects.get(pid=pid)
     products = Product.objects.filter(category=product.category).exclude(pid=pid)
 
+    reviews = ProductReview.objects.filter(product=product).order_by("-date")
+    average_rating = ProductReview.objects.filter(product=product).aggregate(rating=Avg('rating'))
+
     p_image = product.p_images.all()
 
     context = {
         "p":product,
         "p_image":p_image,
+        "average_rating":average_rating,
+        "reviews":reviews,
         "products":products,
     }
 
