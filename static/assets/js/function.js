@@ -92,6 +92,7 @@ $(document).ready(function (){
                 console.log(response);
                 console.log("Data filtred succesfully!!!")
                 $("#filtered-product").html(response.data)
+                
             }
         })
     })
