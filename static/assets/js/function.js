@@ -74,6 +74,7 @@ $(document).ready(function (){
 
             // console.log("Filter values is:", filter_value);
             // console.log("Filter values is:", filter_key);
+            
 
             filter_object[filter_key] = Array.from(document.querySelectorAll('input[data-filter=' + filter_key + ']:checked')).map(function(element){
                 return element.value
