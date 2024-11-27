@@ -97,8 +97,8 @@ class Product(models.Model):
 
     title = models.CharField(max_length=100, default="Fresh Pear")
     image = models.ImageField(upload_to=user_directory_path, default="product.jpg")
-    # description =  models.TextField(null=True, blank=True, default="This is the product")
-    description =  RichTextUploadingField(null=True, blank=True, default="This is the product")
+    description =  models.TextField(null=True, blank=True, default="This is the product")
+    #description =  RichTextUploadingField(null=True, blank=True, default="This is the product")
 
     price = models.DecimalField(max_digits=99999999999999, decimal_places=2, default="1.99")
     old_price = models.DecimalField(max_digits=99999999999999, decimal_places=2, default="2.99")
