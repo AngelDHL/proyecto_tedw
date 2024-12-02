@@ -1,5 +1,5 @@
 console.log("Working fin...")
-console.log("Hola...")
+console.log("HOLA")
 
 const monthNames = ["Jan","Feb","Mar","April","May","June",
     "July","Aug","Sept","Oct","Nov","Dec"
@@ -222,6 +222,31 @@ $(document).ready(function (){
                 this_val.show()
                 $(".cart-items-count").text(response.totalcartitems)
                 $("#cart-list").html(response.data)
+            }
+        })            
+    })
+
+    $(document).on("click",".make-default-address", function(){
+        let id = $(this).attr("data-address-id")
+        let this_val = $(this)
+
+        console.log("ID is: ", id)
+        console.log("Element is:", this_val)
+
+        $.ajax({
+            url: "/make-default-address",
+            date: {
+                "id":id,
+            },
+            dataType: "json",
+            success: function(response){
+                console.log("Address Made Default...")
+                if(response.boolean == true){
+                    $(".check").hide()
+                    $(".action_btn").show()
+                    $(".check"+id).show()
+                    $(".action_btn"+id).hide()
+                }
             }
         })
     })

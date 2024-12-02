@@ -156,9 +156,15 @@
                                                             <p>{{a.mobile}}</p>
                                                             {% comment %} <p>{{a.status}}</p> {% endcomment %}
                                                         </address>
+
+                                                        {% if a.status %}
+                                                            <i data-address-id="{{a.id}}" class="fa fa-check-circle text-successcheck{{a.id}} check"></i>
+                                                            <button data-address-id="{{a.id}}"  class="btn make-default-address button{{a.id}} action_btn">Make default</button>
+                                                        {% else %}
+                                                            <i data-address-id="{{a.id}}" class="fa fa-check-circle text-successcheck{{a.id}}"></i>
+                                                            <button data-address-id="{{a.id}}" class="btn make-default-address button{{a.id}} action_btn">Make default</button>
+                                                        {% endif %}
                                                         
-                                                        <button class="btn">Make Defaukt</button>
-                                                        <i class="fa fa-check-circle text-success"></i>
                                                     </div>
                                                    
                                                 </div>
