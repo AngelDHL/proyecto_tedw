@@ -1,9 +1,23 @@
-from django.urls import path
+from django.urls import include, path
 from core.views import index, category_list_view, product_list_view, category_product_list_view, vendor_list_view, vendor_detail_view, product_detail_view, tag_list, ajax_add_review, search_view, filter_product, add_to_cart, cart_view, delete_items_from_cart, update_from_cart
+from rest_framework import routers
+
+from core.viewsets import CategoryViewSet, ProductImagesViewSet, ProductReviewViewSet, ProductViewSet, VendorViewSet
+
 
 app_name = "core"
 
+router = routers.DefaultRouter()
+router.register(r'products', ProductViewSet)
+router.register(r'categories', CategoryViewSet)
+router.register(r'vendors', VendorViewSet)
+router.register(r'product-images', ProductImagesViewSet)
+router.register(r'product-reviews', ProductReviewViewSet)
+
 urlpatterns = [
+    # API
+    path("api/", include(router.urls)),
+    
     # Homepage
     path("", index, name="index"),
     path("products/", product_list_view, name="product-list"),
