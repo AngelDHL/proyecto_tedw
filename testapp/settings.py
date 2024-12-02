@@ -43,6 +43,9 @@ INSTALLED_APPS = [
     #Third Party
     'taggit',
     'ckeditor',
+    
+    # PayPal Integration
+    'paypal.standard.ipn',
 
     #Custom Apps
     'core',
@@ -145,6 +148,8 @@ JAZZMIN_SETTINGS = {
     'copyright' : "angeldhl.com",
 }
 
+LOGIN_URL = "userauths:sign-in"
+
 AUTH_USER_MODEL = 'userauths.User'
 
 CKEDITOR_UPLOAD_PATH = 'uploads/'
@@ -163,3 +168,6 @@ CKEDITOR_CONFIGS = {
         ),
     }
 }
+
+PAYPAL_RECEIVER_EMAIL = 'angel.daniel.hl@gmail.com'
+PAYPAL_TEST = True
