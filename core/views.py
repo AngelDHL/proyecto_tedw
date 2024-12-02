@@ -15,7 +15,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
 from paypal.standard.forms import PayPalPaymentsForm
 
-from core.models import Product, Category, Vendor, CartOrder, CartOrderItems, ProductImages, ProductReview, wishlist, Address
+from core.models import Product, Category, Vendor, CartOrder, CartOrderProducts, ProductImages, ProductReview, wishlist, Address
 
 
 def index(request):
@@ -266,12 +266,43 @@ def update_from_cart(request):
 
 @login_required
 def checkout_view(request):
+
+    cart_total_amount = 0
+    total_amount = 0
+    # Checar si el cart_data_obj existe
+    if 'cart_data_obj' in request.session:
+
+        # Total amount for PayPal amount
+        for p_id, item in request.session['cart_data_obj'].items():
+            total_amount += int(item['qty']) * float(item['price'])
+
+        # Create order object
+        order = CartOrder.objects.create(
+            user = request.user,
+            price = total_amount,
+        )
+
+        # Total amount for the Cart
+        for p_id, item in request.session['cart_data_obj'].items():
+            cart_total_amount += int(item['qty']) * float(item['price'])
+        
+            cart_order_products = CartOrderProducts.objects.create(
+                order=order,
+                invoice_no="INVOICE_NO-" + str(order.id),
+                item=item['title'],
+                image=item['image'],
+                qty=item['qty'],
+                price=item['price'],
+                total=float(item['qty']) * float(item['price'])
+            )
+
+
     host = request.get_host()
     paypal_dict = {
         'business': settings.PAYPAL_RECEIVER_EMAIL,
-        'amount': '1',
-        'item_name': "Order-Item-No-4",
-        'invoice': "INV_NO_4",
+        'amount': cart_total_amount,
+        'item_name': "Order-Item-No-" + str(order.id),
+        'invoice': "INV_NO-" + str(order.id),
         'currency_code': "MXN",
         'notify_url': 'http://{}{}'.format(host, reverse("core:paypal-ipn")),
         'return_url': 'http://{}{}'.format(host, reverse("core:payment-completed")),
