@@ -1,6 +1,6 @@
 from django import views
 from django.urls import path, include
-from core.views import index, category_list_view, product_list_view, category_product_list_view, vendor_list_view, vendor_detail_view, product_detail_view, tag_list, ajax_add_review, search_view, filter_product, add_to_cart, cart_view, delete_items_from_cart, update_from_cart, checkout_view, payment_completed_view, payment_failed_view
+from core.views import index, category_list_view, product_list_view, category_product_list_view, vendor_list_view, vendor_detail_view, product_detail_view, tag_list, ajax_add_review, search_view, filter_product, add_to_cart, cart_view, delete_items_from_cart, update_from_cart, checkout_view, payment_completed_view, payment_failed_view, customer_dashboard, order_detail
 
 app_name = "core"
 
@@ -53,4 +53,10 @@ urlpatterns = [
 
     # Payment Failed
     path("payment-failed/", payment_failed_view, name="payment-failed"),
+
+    # Dashboard URL
+    path("dashboard/", customer_dashboard, name="dashboard"),
+
+    # Order Detail URL
+    path("dashboard/order/<int:id>", order_detail, name="order-detail"),
 ]
