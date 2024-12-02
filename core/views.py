@@ -21,6 +21,7 @@ def index(request):
 
     return render(request, 'core/index.html', context)
 
+
 def product_list_view(request):
     products = Product.objects.filter(product_status="published")
 
@@ -30,6 +31,7 @@ def product_list_view(request):
 
     return render(request, 'core/product-list.html', context) 
 
+
 def category_list_view(request):
     categories = Category.objects.all().annotate(product_count=Count("title"))
 
@@ -38,6 +40,7 @@ def category_list_view(request):
     }
 
     return render(request, 'core/category-list.html', context)
+
 
 def category_product_list_view(request,cid):
     category = Category.objects.get(cid=cid)
@@ -50,6 +53,7 @@ def category_product_list_view(request,cid):
 
     return render(request, "core/category-product-list.html", context)
 
+
 def vendor_list_view(request):
     vendors = Vendor.objects.all()
 
@@ -57,6 +61,7 @@ def vendor_list_view(request):
         "vendors":vendors,
     }
     return render(request, "core/vendor-list.html", context)
+
 
 def vendor_detail_view(request, vid):
     vendor = Vendor.objects.get(vid=vid)
@@ -68,6 +73,7 @@ def vendor_detail_view(request, vid):
     }
 
     return render(request, "core/vendor-detail.html", context)
+
 
 def product_detail_view(request, pid):
     product = Product.objects.get(pid=pid)
@@ -100,6 +106,7 @@ def product_detail_view(request, pid):
 
     return render(request, "core/product-detail.html", context)
 
+
 def tag_list(request, tag_slug=None):
     products = Product.objects.filter(product_status="published").order_by("-id")
 
@@ -114,6 +121,7 @@ def tag_list(request, tag_slug=None):
     }
 
     return render(request, "core/tag.html", context)
+
 
 def ajax_add_review(request, pid):
     product = Product.objects.get(pk=pid)
@@ -142,6 +150,7 @@ def ajax_add_review(request, pid):
         }
     )
 
+
 def search_view(request):
     query = request.GET.get("q")
 
@@ -152,6 +161,7 @@ def search_view(request):
         "query":query,
     }
     return render(request, "core/search.html", context)
+
 
 def filter_product(request):
     categories = request.GET.getlist("category[]")
@@ -173,6 +183,7 @@ def filter_product(request):
 
     data = render_to_string("core/async/product-list.html", {"products":products})
     return JsonResponse({"data":data})
+
 
 def add_to_cart(request):
     cart_product = {}
@@ -199,6 +210,7 @@ def add_to_cart(request):
         request.session['cart_data_obj'] = cart_product
     return JsonResponse({"data":request.session['cart_data_obj'], 'totalcartitems': len(request.session['cart_data_obj'])})
 
+
 def cart_view(request):
     cart_total_amount = 0
     if 'cart_data_obj' in request.session:
@@ -208,6 +220,7 @@ def cart_view(request):
     else:
         messages.warning(request,"Your cart is empty")
         return redirect("core:index")
+
 
 def delete_items_from_cart(request):
     product_id = str(request.GET['id'])
@@ -224,6 +237,7 @@ def delete_items_from_cart(request):
     
     context = render_to_string("core/async/cart-list.html", {"cart_data":request.session['cart_data_obj'], 'cart_total_amount':cart_total_amount})
     return JsonResponse({"data": context, 'totalcartitems':len(request.session['cart_data_obj'])})
+
 
 def update_from_cart(request):
     product_id = str(request.GET['id'])
@@ -242,4 +256,14 @@ def update_from_cart(request):
     
     context = render_to_string("core/async/cart-list.html", {"cart_data":request.session['cart_data_obj'], 'cart_total_amount':cart_total_amount})
     return JsonResponse({"data": context, 'totalcartitems':len(request.session['cart_data_obj'])})
+
+
+def checkout_view(request):
+    cart_total_amount = 0
+    if 'cart_data_obj' in request.session:
+        for p_id, item in request.session['cart_data_obj'].items():
+            cart_total_amount += int(item['qty']) * float(item['price'])
+    
+        return render(request, "core/checkout.html", {"cart_data":request.session['cart_data_obj'], 'totalcartitems':len(request.session['cart_data_obj']), 'cart_total_amount':cart_total_amount})
+
 
